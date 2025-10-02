@@ -14,6 +14,7 @@ const nav = [
   { href: "/reviews", label: "Reviews" },
   { href: "/news", label: "News" },
   { href: "/contact", label: "Contact" },
+  { href: "/chat", label: "Chat" }, // add Chat option in navbar
 ]
 
 export function SiteHeader() {
@@ -43,6 +44,11 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
+          <Link href="/signup">
+            <Button variant="outline" className="hidden sm:inline-flex bg-transparent">
+              Sign up
+            </Button>
+          </Link>
           <Link href="/login">
             <Button className="relative overflow-hidden">
               <span className="relative z-10">Login</span>

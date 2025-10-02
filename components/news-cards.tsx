@@ -7,7 +7,10 @@ export function NewsCards({ items }: { items: News[] }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((n) => (
-        <GlassCard key={n.id} className="p-5 hover:shadow-[0_0_24px_theme(colors.primary/0.12)] transition-shadow">
+        <GlassCard
+          key={n.id}
+          className="relative p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_24px_theme(colors.primary/0.16)]"
+        >
           <div className="text-sm text-primary mb-2">{n.source}</div>
           <div className="text-pretty">{n.title}</div>
           {n.href ? (

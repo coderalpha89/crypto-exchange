@@ -7,6 +7,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
@@ -23,10 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Suspense fallback={<div>Loading...</div>}>
             <SiteHeader />
             <main className="min-h-[calc(100dvh-64px)]">{children}</main>
+            <SiteFooter />
             <Toaster />
           </Suspense>
         </ThemeProvider>
