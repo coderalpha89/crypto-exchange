@@ -1,15 +1,40 @@
-let RATES = {
-  USDT: { INR: 83 },
-}
+import { NextResponse } from "next/server";
+
+const API_URL =
+  "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest";
+const SYMBOLS = ["BTC", "ETH", "DOGE", "SOL", "BNB", "USDT"];
 
 export async function GET() {
-  return Response.json(RATES, { headers: { "cache-control": "no-store" } })
-}
+  try {
+    const res = await fetch(
+      `${API_URL}?symbol=${SYMBOLS.join(",")}&convert=INR`,
+      {
+        headers: {
+          "X-CMC_PRO_API_KEY": process.env.NEXT_PUBLIC_COINMARKET_API_KEY || "",
+        },
+        next: { revalidate: 10 },
+      }
+    );
 
-export async function POST(req: Request) {
-  const body = await req.json().catch(() => ({}))
-  if (body && typeof body === "object") {
-    RATES = { ...RATES, ...body }
+    if (!res.ok) {
+      const errorText = await res.text();
+      return NextResponse.json({ error: errorText }, { status: res.status });
+    }
+
+    const json = await res.json();
+    const data: Record<string, any> = {};
+
+    for (const symbol of SYMBOLS) {
+      const inrPrice = json.data[symbol]?.quote?.INR?.price;
+      data[symbol] = { INR: inrPrice };
+    }
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("Error fetching rates:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch crypto rates" },
+      { status: 500 }
+    );
   }
-  return Response.json(RATES)
 }
