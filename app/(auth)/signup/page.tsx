@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { auth } from "@/lib/firebase"
+import { db } from "@/lib/firebase"
 
 
 export default function SignupPage() {
   const router = useRouter()
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   async function handleSignup() {
